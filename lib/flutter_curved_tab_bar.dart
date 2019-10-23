@@ -1,6 +1,6 @@
 library flutter_curved_tab_bar;
-
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class CurvedTabBar extends StatefulWidget {
   final Color tabsColor;
@@ -30,149 +30,140 @@ class CurvedTabBarState extends State<CurvedTabBar> {
 
     return Column(children: [
       Container(
+        height: MediaQuery.of(context).size.height*0.06,
         color: widget.tabsColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedKey = tab1;
-                    _index = 0;
-                    widget.onTabSelected(_index);
-                  });
-                },
-                child: _tabLeft(
-                    widget.icons[0],
-                    widget.tabSelectedColor,
-                    widget.tabsColor,
-                    widget.iconsColor,
-                    widget.iconSelectedColor,
-                    selectedKey == tab1
-                )
-            ),
-            GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedKey = tab2;
-                    _index = 1;
-                    widget.onTabSelected(_index);
-                  });
-                },
-                child: _tabCenter(
-                    widget.icons[1],
-                    widget.tabSelectedColor,
-                    widget.tabsColor,
-                    widget.iconsColor,
-                    widget.iconSelectedColor,
-                    selectedKey == tab2
-                )
-            ),
-            GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedKey = tab3;
-                    _index = 2;
-                    widget.onTabSelected(_index);
-                  });
-                },
-                child: _tabCenter(
-                    widget.icons[2],
-                    widget.tabSelectedColor,
-                    widget.tabsColor,
-                    widget.iconsColor,
-                    widget.iconSelectedColor,
-                    selectedKey == tab3
-                )
-            ),
-            GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedKey = tab4;
-                    _index = 3;
-                    widget.onTabSelected(_index);
-                  });
-                },
-                child: _tabRight(
-                    widget.icons[3],
-                    widget.tabSelectedColor,
-                    widget.tabsColor,
-                    widget.iconsColor,
-                    widget.iconSelectedColor,
-                    selectedKey == tab4
-                )
-            )
-          ],
+        child: Stack(
+            children:
+            [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedKey = tab1;
+                          _index = 0;
+                          widget.onTabSelected(_index);
+                        });
+                      },
+                      child: _tab(widget.icons[0], widget.iconsColor, widget.tabsColor)
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedKey = tab2;
+                          _index = 1;
+                          widget.onTabSelected(_index);
+                        });
+                      },
+                      child: _tab(widget.icons[1], widget.iconsColor, widget.tabsColor)
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedKey = tab3;
+                          _index = 2;
+                          widget.onTabSelected(_index);
+                        });
+                      },
+                      child: _tab(widget.icons[2], widget.iconsColor, widget.tabsColor)
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedKey = tab4;
+                          _index = 3;
+                          widget.onTabSelected(_index);
+                        });
+                      },
+                      child: _tab(widget.icons[3],  widget.iconsColor, widget.tabsColor)
+                  )
+                ],
+              ),
+              _tabSelected(widget.icons, widget.iconSelectedColor, widget.tabSelectedColor, _index)
+            ]
         ),
       ),
     ]);
   }
 
-  Widget _tabLeft(IconData icon, Color tabColor, Color backgroundTabColor, Color iconsColor, Color iconSelectedColor, bool selected) {
+  Widget _tab(IconData icon, Color iconColor, Color tabColor) {
+    return Container(
+      color: tabColor,
+      width: MediaQuery.of(context).size.width*0.25,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+        child: Icon(
+          icon,
+          color: iconColor,
+        ),
+      ),
+    );
+  }
 
-    print("left ${selected}");
+  Widget _tabSelected(List<IconData> icons, Color iconSelectedColor, Color tabSelectedColor, int indexSelected) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    return Container(
-        width: selected ? width * 0.25 + 20 : width * 0.25 - 20,
-        height: height * 0.06,
-        child: selected ? CustomPaint(
-          painter: CustomPathTabLeft(tabColor: tabColor),
-          child: Container(
-            child: Padding(
-              padding: selected ? EdgeInsets.only(right: 20.0) : EdgeInsets.all(0.0) ,
-              child: Icon(
-                icon,
-                color: iconSelectedColor,
+    if (indexSelected == 0) {
+      return AnimatedAlign(
+        duration: Duration(milliseconds: 500),
+        alignment: Alignment(-1.0, 0),
+        child: Container(
+            width: width * 0.25 + 20,
+            height: height * 0.06,
+            child: CustomPaint(
+              painter: CustomPathTabLeft(tabColor: tabSelectedColor),
+              child: Container(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: Icon(
+                    icons[0],
+                    color: iconSelectedColor,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ) : Container(color: backgroundTabColor, child: Icon(icon, color: iconsColor))
-    );
-  }
+            )
+        ),
 
-  Widget _tabCenter(IconData icon, Color tabColor, Color backgroundTabColor, Color iconsColor, Color iconSelectedColor, bool selected) {
+      );
+    }
+    else if (indexSelected == 3) {
+      return AnimatedAlign(
+        duration: Duration(milliseconds: 500),
+        alignment: Alignment(1.0, 0),
+        child: Container(
+            width: width * 0.25 + 20,
+            height: height * 0.06,
+            child: CustomPaint(
+              painter: CustomPathTabRight(tabColor: tabSelectedColor),
+              child: Container(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.0),
+                  child: Icon(icons[3], color: iconSelectedColor),
+                ),
+              ),
+            )
+        ),
 
-    print("center ${selected}");
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
-    return Container(
-        width: selected ? width * 0.25 + 40 : width * 0.25 - 20,
-        height: height * 0.06,
-        child: selected ? CustomPaint(
-          painter: CustomPathTabCenter(tabColor: tabColor),
-          child: Container(
-            child: Padding(
-              padding: selected ? EdgeInsets.only(right: 0.0) : EdgeInsets.all(0.0),
-              child: Icon(icon, color: iconSelectedColor),
-            ),
-          ),
-        ) : Container(color: backgroundTabColor, child: Icon(icon, color: iconsColor))
-    );
-  }
-
-  Widget _tabRight(IconData icon, Color tabColor, Color backgroundTabColor, Color iconsColor, Color iconSelectedColor, bool selected) {
-
-    print("right ${selected}");
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
-    return Container(
-        width: selected ? width * 0.25 + 20 : width * 0.25 - 20,
-        height: height * 0.06,
-        child: selected ? CustomPaint(
-          painter: CustomPathTabRight(tabColor: tabColor),
-          child: Container(
-            child: Padding(
-              padding: selected ? EdgeInsets.only(left: 20.0) : EdgeInsets.all(0.0),
-              child: Icon(icon, color: iconSelectedColor),
-            ),
-          ),
-        ) : Container(color: backgroundTabColor, child: Icon(icon, color: iconsColor)
-        )
-    );
+      );
+    }
+    else {
+      return AnimatedAlign(
+        duration: Duration(milliseconds: 500),
+        alignment: Alignment(0.375*(pow(-1, indexSelected)), 0),
+        child: Container(
+            width: width * 0.25 + 40,
+            height: height * 0.06,
+            child: CustomPaint(
+              painter: CustomPathTabCenter(tabColor: tabSelectedColor),
+              child: Container(
+                  child: Icon(icons[indexSelected], color: iconSelectedColor)
+              ),
+            )
+        ),
+      );
+    }
   }
 }
 
