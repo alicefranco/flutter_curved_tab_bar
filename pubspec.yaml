@@ -1,8 +1,8 @@
 name: flutter_curved_tab_bar
-description: A new Flutter package.
+description: A flutter package to create a custom curver tab bar for navigation.
 version: 0.0.1
-author:
-homepage:
+author: Alice Franco <franco.lice@gmail.com>
+homepage: https://github.com/alicefranco/flutter_curved_tabbar.git
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
