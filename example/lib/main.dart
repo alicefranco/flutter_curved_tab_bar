@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _screens = <Widget>[_screen0(), _screen1(), _screen2(), _screen3() ];
+    final List<Widget> _screens = <Widget>[_screen0(), _screen1(), _screen2(), _screen3(), _screen4()];
 
     return SafeArea(
       child: Scaffold(
@@ -40,9 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 tabSelectedColor: Colors.blueAccent,
                 iconSelectedColor: Colors.white,
                 iconsColor: Colors.blue[200],
-                icons: [Icons.person_outline, Icons.widgets, Icons.bookmark, Icons.search],
+                numberOfTabs: 4,
+                icons: [Icons.person_outline, Icons.widgets, Icons.bookmark, Icons.search, Icons.style],
                 onTabSelected: (_index) {
-                  _currentIndex = _index;
+                  setState(() {
+                    _currentIndex = _index;
+                  });
                 }
               ),
               _screens[_currentIndex]
@@ -82,6 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
       height: MediaQuery.of(context).size.height - 73,
       color: Colors.white,
       child: Center(child: Text("Screen 3"))
+    );
+  }
+
+  Widget _screen4() {
+    return Container(
+        height: MediaQuery.of(context).size.height - 73,
+        color: Colors.white,
+        child: Center(child: Text("Screen 4"))
     );
   }
 }
