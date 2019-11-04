@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 tabSelectedColor: Colors.blueAccent,
                 iconSelectedColor: Colors.white,
                 iconsColor: Colors.blue[200],
-                numberOfTabs: 4,
+                numberOfTabs: 5,
                 icons: [Icons.person_outline, Icons.widgets, Icons.bookmark, Icons.search, Icons.style],
                 onTabSelected: (_index) {
                   setState(() {
